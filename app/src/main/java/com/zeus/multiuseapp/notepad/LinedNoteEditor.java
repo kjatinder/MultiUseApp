@@ -1,7 +1,9 @@
 package com.zeus.multiuseapp.notepad;
 
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -11,9 +13,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.zeus.multiuseapp.R;
+import com.zeus.multiuseapp.common.Constants;
+import com.zeus.multiuseapp.listener.OnStartNewFragmentListener;
 import com.zeus.multiuseapp.models.Notes;
 
 import java.util.Calendar;
@@ -26,8 +30,40 @@ public class LinedNoteEditor extends Fragment {
     private EditText mTitleEditText, mContentEditText;
     private View mRootView;
 
+    private boolean InEditMode = false;
+
+    private OnStartNewFragmentListener mCallback;
+
+    private Notes mCurrentNote = null;
+
     public LinedNoteEditor() {
         // Required empty public constructor
+    }
+
+    public static LinedNoteEditor newInstance(String serializedNote) {
+        LinedNoteEditor fragment = new LinedNoteEditor();
+        if (!serializedNote.isEmpty()) {
+            Bundle args = new Bundle();
+            args.putString(Constants.SERIALIZED_NOTES, serializedNote);
+            fragment.setArguments(args);
+        }
+        return fragment;
+    }
+
+    private void getNote() {
+        Bundle args = getArguments();
+        if (args != null) {
+            if (args.containsKey(Constants.SERIALIZED_NOTES)) {
+                //we have an edit mode
+                String jsonNote = args.getString(Constants.SERIALIZED_NOTES);
+                Gson gson = new Gson();
+                mCurrentNote = gson.fromJson(jsonNote, Notes.class);
+
+                if (mCurrentNote != null && mCurrentNote.getId() != null && mCurrentNote.getId() > 0) {
+                    InEditMode = true;
+                }
+            }
+        }
     }
 
     @Override
@@ -44,7 +80,16 @@ public class LinedNoteEditor extends Fragment {
         mTitleEditText = (EditText) mRootView.findViewById(R.id.xETitle);
         mContentEditText = (EditText) mRootView.findViewById(R.id.xEContent);
 
+        getNote();
         return mRootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (InEditMode) {
+            populateNote();
+        }
     }
 
     @Override
@@ -57,7 +102,16 @@ public class LinedNoteEditor extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
-                saveNote();
+                if (InEditMode) {
+                    if (saveNote()) {
+                        Snackbar.make(mRootView, R.string.note_updated, Snackbar.LENGTH_SHORT).show();
+                    }
+                } else {
+                    if (saveNote()) {
+                        Snackbar.make(mRootView, R.string.note_not_saved, Snackbar.LENGTH_SHORT).show();
+                    }
+                }
+                mCallback.onStartNewFragment(new NoteListFragment(), getString(R.string.note_list));
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -83,8 +137,22 @@ public class LinedNoteEditor extends Fragment {
         notes.setDateModified(Calendar.getInstance().getTimeInMillis());
         notes.save();
 
-        Toast.makeText(getActivity(), "Table saved with id: " + notes.getId(), Toast.LENGTH_SHORT).show();
+        Snackbar.make(mRootView, getString(R.string.table_with_id) + notes.getId(), Snackbar.LENGTH_SHORT).show();
         return true;
     }
 
+    private void populateNote() {
+        mTitleEditText.setText(mCurrentNote.getTitle());
+        mContentEditText.setText(mCurrentNote.getContent());
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mCallback = (OnStartNewFragmentListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + context.getString(R.string.must_implement));
+        }
+    }
 }
