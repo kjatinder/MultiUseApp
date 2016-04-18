@@ -2,9 +2,11 @@ package com.zeus.multiuseapp.notepad;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -102,21 +104,50 @@ public class LinedNoteEditor extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
-                if (InEditMode) {
-                    if (saveNote()) {
-                        Snackbar.make(mRootView, R.string.note_updated, Snackbar.LENGTH_SHORT).show();
-                    }
-                } else {
-                    if (saveNote()) {
-                        Snackbar.make(mRootView, R.string.note_not_saved, Snackbar.LENGTH_SHORT).show();
-                    }
-                }
+                saveNoteConfirmation();
                 mCallback.onStartNewFragment(new NoteListFragment(), getString(R.string.note_list));
                 break;
+            case R.id.delete:
+                if (InEditMode) {
+                    askForConfirmation();
+                } else {
+                    Snackbar.make(mRootView, R.string.save_note_before_deleting, Snackbar.LENGTH_SHORT).show();
+                }
         }
         return super.onOptionsItemSelected(item);
     }
 
+    private void saveNoteConfirmation() {
+        if (InEditMode) {
+            if (saveNote()) {
+                Snackbar.make(mRootView, R.string.note_updated, Snackbar.LENGTH_SHORT).show();
+            }
+        } else {
+            if (saveNote()) {
+                Snackbar.make(mRootView, R.string.note_not_saved, Snackbar.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void askForConfirmation() {
+        final String titleOfNote = mCurrentNote.getTitle();
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+        alertDialog.setTitle(getString(R.string.delete_with_comma) + titleOfNote + getString(R.string.question))
+                .setMessage(getString(R.string.are_you_sure_you_want_to_delete) + titleOfNote + (R.string.question));
+        alertDialog.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mCurrentNote.delete();
+                mCallback.onStartNewFragment(new NoteListFragment(), getString(R.string.note_list));
+            }
+        }).setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alertDialog.show();
+    }
     private boolean saveNote() {
         String title = mTitleEditText.getText().toString();
         String content = mContentEditText.getText().toString();

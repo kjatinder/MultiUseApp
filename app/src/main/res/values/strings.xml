@@ -37,4 +37,10 @@
     <string name="note_editor">Note Editor</string>
     <string name="table_with_id">"Table saved with id: "</string>
     <string name="delete">Delete</string>
+    <string name="save_note_before_deleting">Save note before deleting !</string>
+    <string name="delete_with_comma">Delete \'</string>
+    <string name="are_you_sure_you_want_to_delete">Are you sure you want to delete \'</string>
+    <string name="question">\' ?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

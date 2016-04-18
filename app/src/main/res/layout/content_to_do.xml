@@ -12,4 +12,9 @@
     tools:context="com.zeus.multiuseapp.todo.ToDoActivity"
     tools:showIn="@layout/activity_to_do">
 
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </RelativeLayout>
