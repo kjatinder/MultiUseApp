@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="90dp"
+              android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="5"
+        android:background="@color/note_back"
+        android:orientation="vertical"
+        android:weightSum="3">
+
+        <CheckBox
+            android:id="@+id/todoListCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="2dp"
+            android:layout_weight="2"
+            android:background="@color/note_back"
+            android:clickable="false"
+            android:focusable="false"
+            android:fontFamily="sans-serif"
+            android:gravity="left|center"
+            android:paddingLeft="20dp"
+            android:text="ToDo Items"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            tools:ignore="NestedWeights,RtlHardcoded,RTlSymmetry,UnusedAttribute"/>
+
+        <TextView
+            android:id="@+id/todoListCreated"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/note_back"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="left|center"
+            android:paddingLeft="15dp"
+            android:textSize="18sp"
+            android:textStyle="italic"
+            android:visibility="gone"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/tHandle"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/note_back"
+        android:contentDescription="@string/moving_handle"
+        android:src="@drawable/ic_reorder_black_24px"/>
+</LinearLayout>

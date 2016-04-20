@@ -133,10 +133,12 @@ public class LinedNoteEditor extends Fragment {
         final String titleOfNote = mCurrentNote.getTitle();
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
         alertDialog.setTitle(getString(R.string.delete_with_comma) + titleOfNote + getString(R.string.question))
-                .setMessage(getString(R.string.are_you_sure_you_want_to_delete) + titleOfNote + (R.string.question));
+                .setMessage(getString(R.string.are_you_sure_you_want_to_delete) + titleOfNote + "' ?");
         alertDialog.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                String title = mCurrentNote.getTitle();
+                Snackbar.make(mRootView, " note '" + title + "' is deleted ", Snackbar.LENGTH_SHORT).show();
                 mCurrentNote.delete();
                 mCallback.onStartNewFragment(new NoteListFragment(), getString(R.string.note_list));
             }
@@ -167,8 +169,7 @@ public class LinedNoteEditor extends Fragment {
         notes.setDateCreated(Calendar.getInstance().getTimeInMillis());
         notes.setDateModified(Calendar.getInstance().getTimeInMillis());
         notes.save();
-
-        Snackbar.make(mRootView, getString(R.string.table_with_id) + notes.getId(), Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(mRootView, "note '" + notes.getTitle() + "' is saved ", Snackbar.LENGTH_LONG).show();
         return true;
     }
 

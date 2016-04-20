@@ -1,6 +1,7 @@
 package com.zeus.multiuseapp.common.demo;
 
 import com.zeus.multiuseapp.models.Notes;
+import com.zeus.multiuseapp.models.TodoItem;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -11,22 +12,37 @@ import java.util.List;
  * Created by Zeus on 4/11/2016.
  */
 public class SampleData {
+    public static List<TodoItem> getSampleTasks() {
+        List<TodoItem> items = new ArrayList<TodoItem>();
+        TodoItem item1 = new TodoItem();
+        item1.setTitle("Get milk");
+        item1.setChecked(true);
+        Calendar calendar1 = GregorianCalendar.getInstance();
+        item1.setDateModified(calendar1.getTimeInMillis());
+        items.add(item1);
 
+        TodoItem item2 = new TodoItem();
+        item2.setTitle("Visit Doctor,ou have flu");
+        item2.setChecked(true);
+        Calendar calendar2 = GregorianCalendar.getInstance();
+        calendar2.add(Calendar.DAY_OF_WEEK, 2);
+        calendar2.add(Calendar.MILLISECOND, 2438923);
+        item2.setDateModified(calendar2.getTimeInMillis());
+        items.add(item2);
+
+        TodoItem item3 = new TodoItem();
+        item3.setTitle("Read The Above Task");
+        item3.setChecked(false);
+        Calendar calendar3 = GregorianCalendar.getInstance();
+        calendar3.add(Calendar.DAY_OF_WEEK, 3);
+        calendar3.add(Calendar.MILLISECOND, 47228343);
+        item3.setDateModified(calendar3.getTimeInMillis());
+        items.add(item3);
+        return items;
+    }
     public static List<Notes> getSmapleNote() {
         List<Notes> sampleNotes = new ArrayList<Notes>();
         //create some dummy notes
-
-        Notes notes1 = new Notes();
-        notes1.setId((long) 1);
-        notes1.setTitle("Chatbir Zoo Trip");
-        notes1.setContent("Visited Chatbir zoo near Chandigarh. Had lot of funs and selfies");
-
-        Calendar calendar1 = GregorianCalendar.getInstance();
-        notes1.setDateCreated(calendar1.getTimeInMillis());
-        notes1.setDateModified(calendar1.getTimeInMillis());
-
-        //add note to the list of notes
-        sampleNotes.add(notes1);
 
         return sampleNotes;
     }
