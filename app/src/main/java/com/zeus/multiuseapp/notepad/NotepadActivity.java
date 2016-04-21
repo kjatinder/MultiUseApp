@@ -67,7 +67,7 @@ public class NotepadActivity extends AppCompatActivity implements OnStartNewFrag
                 .withToolbar(mToolbar)
                 .withActionBarDrawerToggle(true)
                 .addDrawerItems(
-                        new PrimaryDrawerItem().withName(R.string.note_list)
+                        new PrimaryDrawerItem().withName(R.string.Notepad_List)
                                 .withIcon(FontAwesome.Icon.faw_file_text)
                                 .withIdentifier(1),
                         new PrimaryDrawerItem().withName(R.string.todo_list)
