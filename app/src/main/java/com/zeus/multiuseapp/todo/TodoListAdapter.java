@@ -17,6 +17,7 @@ import com.zeus.multiuseapp.R;
 import com.zeus.multiuseapp.common.ItemTouchHelperAdapter;
 import com.zeus.multiuseapp.common.ItemTouchHelperViewHolder;
 import com.zeus.multiuseapp.listener.OnStartDragListener;
+import com.zeus.multiuseapp.listener.OnToDoListItemChangeListener;
 import com.zeus.multiuseapp.models.TodoItem;
 
 import java.util.Collections;
@@ -29,12 +30,16 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
     private List<TodoItem> mTodoItems;
     private Context mContext;
     private OnStartDragListener mDragListener;
+    private OnToDoListItemChangeListener mToDoListChanged;
 
 
-    public TodoListAdapter(List<TodoItem> items, Context context, OnStartDragListener dragListener) {
+    public TodoListAdapter(List<TodoItem> items, Context context, OnStartDragListener dragListener,
+                           OnToDoListItemChangeListener onToDoListItemChangeListener) {
         mTodoItems = items;
         mContext = context;
         mDragListener = dragListener;
+        mToDoListChanged = onToDoListItemChangeListener;
+
     }
 
     @Override
@@ -73,6 +78,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
     @Override
     public void OnItemMove(int fromPosition, int toPosition) {
         Collections.swap(mTodoItems, fromPosition, toPosition);
+        mToDoListChanged.onTodoListItemChanged(mTodoItems);
         notifyItemMoved(fromPosition, toPosition);
 
     }
@@ -81,7 +87,6 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
     public void OnItemDismissed(int position) {
 
     }
-
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
         public TextView mTodoDate;

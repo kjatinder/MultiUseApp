@@ -44,4 +44,18 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="Notepad_List">Notepad List</string>
+    <string name="sml">Small</string>
+    <string name="med">Medium</string>
+    <string name="lrg">Large</string>
+    <string name="choose_brush_size">Choose Brush Size</string>
+    <string name="paint">Paint</string>
+    <string name="start_new">New</string>
+    <string name="brush">Brush</string>
+    <string name="erase">Erase</string>
+    <string name="delete_title">Delete \'</string>
+    <string name="yes_todo">Yes</string>
+    <string name="no_todo">No</string>
+    <string name="are_u_sure_you_want_to_delete">Are you sure you want to delete \'</string>
+    <string name="question_todo">\' ?</string>
+
 </resources>
